@@ -9,10 +9,12 @@ import Malt from "../../public/icons/icon_malt.svg";
 
 // React Icons (Font Awesome)
 import { FaGithub, FaLinkedinIn, FaWhatsapp } from "react-icons/fa";
+import IntroBurst from "../../component/IntroBurst";
 
 export default function Home() {
   return (
     <div className="relative min-h-screen pb-20 p-4 body-page flex items-center justify-center">
+      <IntroBurst />
       {/* Image en arrière-plan */}
       <Image
         className="absolute md:top-9 md:left-2/12 inset-0 z-0"
