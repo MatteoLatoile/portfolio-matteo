@@ -60,6 +60,9 @@ export default function AboutPage() {
 
   return (
     <div className="body-page">
+      <head>
+        <title>A propos - Portfolio</title>
+      </head>
       {/* Header */}
       <div className="max-w-6xl mx-auto px-4 md:px-6">
         <h3

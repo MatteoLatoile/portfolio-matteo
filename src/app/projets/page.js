@@ -92,6 +92,9 @@ export default function Page() {
 
   return (
     <div className="body-page">
+      <head>
+        <title>Projets - Portfolio</title>
+      </head>
       {/* Header */}
       <div className="max-w-6xl mx-auto px-4 md:px-6">
         <h3 className="text-3xl md:text-6xl tracking-[-0.06em] pt-20 font-semibold text-white">

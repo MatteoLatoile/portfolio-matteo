@@ -5,14 +5,17 @@ import "./globals.css";
 export const metadata = {
   title: "Portfolio",
   description: "Portfolio Dev",
+  icons: { icon: "/favicon.png" }, // <-- pas de ../public, jamais.
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="fr">
-      <Navbar />
-      <body>{children}</body>
-      <Footer />
+      <body>
+        <Navbar />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }

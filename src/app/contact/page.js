@@ -12,6 +12,9 @@ import {
 export default function Page() {
   return (
     <div className="body-page pb-20">
+      <head>
+        <title>Contact - Portfolio</title>
+      </head>
       {/* Header */}
       <div className="max-w-6xl mx-auto px-4 md:px-6">
         <h3 className="text-3xl md:text-6xl font-semibold text-white pt-20">
