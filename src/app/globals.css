@@ -1,4 +1,15 @@
 @import "tailwindcss";
+
+#__next-build-watcher,
+#__nextjs-dev-overlay {
+  display: none !important;
+}
+
+html,
+body {
+  background: #2a003f; /* ton fond global */
+}
+
 .body-page {
   background: #2a003f;
   background: linear-gradient(

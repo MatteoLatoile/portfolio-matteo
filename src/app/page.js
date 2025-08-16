@@ -24,12 +24,14 @@ export default function Home() {
 
       {/* Contenu texte */}
       <div className="relative md:w-1/2 z-10 md:m-auto">
-        <h1 className="text-7xl leading-[60px] mt-[100px] tracking-[-0.06em] mb-7 text-white font-medium md:text-9xl md:leading-[100px]">
+        <h1 className="text-7xl leading-[60px] mt-[100px] tracking-[-0.06em] mb-7 text-white font-medium md:text-8xl md:leading-[80px]">
           Mattéo. <br /> Full Stack. <br /> Full Control.
         </h1>
         <p className="text-[#B0A9C2] tracking-[-0.06em]">
-          Développeur full stack, je conçois des applications complètes — du
-          back-end solide à l’interface raffinée.
+          Développeur <strong>full stack</strong>, je conçois des{" "}
+          <strong>applications</strong> complètes — du <strong>back-end</strong>{" "}
+          solide à l’
+          <strong>interface</strong> raffinée.
         </p>
 
         <div className="md:flex md:gap-8 md:items-center">

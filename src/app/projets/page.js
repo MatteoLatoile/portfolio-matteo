@@ -1,29 +1,38 @@
-// app/projets/page.jsx
 "use client";
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useLayoutEffect, useRef } from "react";
+import dynamic from "next/dynamic";
+import { useLayoutEffect, useRef, useState } from "react";
 
-import ProjectCard from "../../../component/ProjectCard";
+const ProjectCard = dynamic(() => import("../../../component/ProjectCard"), {
+  ssr: false,
+  loading: () => <SkeletonCard />,
+});
+const ProjectModal = dynamic(() => import("../../../component/ProjectModal"), {
+  ssr: false,
+});
+
 import Russel from "../../../public/projets/catway.webp";
 import Irab from "../../../public/projets/projet_irab_master.webp";
 import Klaxon from "../../../public/projets/touche_pas_au_klaxon.webp";
 import Artisan from "../../../public/projets/trouve_ton_artisan.webp";
 
-export default function Page() {
+export default function ProjetPage() {
   const stackRef = useRef(null);
+  const [modalData, setModalData] = useState(null);
+  const closeModal = () => setModalData(null);
 
   useLayoutEffect(() => {
     if (typeof window === "undefined") return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     gsap.registerPlugin(ScrollTrigger);
 
     const el = stackRef.current;
     const ctx = gsap.context(() => {
       const items = gsap.utils.toArray(".stack-item");
 
-      // Anim légère pendant la phase sticky
       items.forEach((card, i) => {
         gsap.to(card, {
           scale: 0.985,
@@ -56,34 +65,37 @@ export default function Page() {
         }
       });
 
-      // ===== Padding dynamique pour éviter le "trou" avant le footer =====
       const setPad = () => {
         if (!el) return;
         const last = el.querySelector(".stack-item:last-child");
         if (!last) return;
 
         const styles = getComputedStyle(last);
-        const topSticky = parseFloat(styles.top) || 0; // ex: 64/96px
-        const lastH = last.getBoundingClientRect().height; // hauteur carte
+        const topSticky = parseFloat(styles.top) || 0;
+        const lastH = last.getBoundingClientRect().height;
         const vh = window.innerHeight;
 
         const pb = Math.max(0, vh - topSticky - lastH);
         el.style.paddingBottom = `${pb}px`;
-        // recalcul ScrollTrigger quand la taille change
         ScrollTrigger.refresh();
       };
 
       setPad();
-      // ajuster si resize/orientation ou assets chargés
-      const onResize = () => setPad();
+
+      let raf;
+      const onResize = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(setPad);
+      };
+
       window.addEventListener("resize", onResize);
       ScrollTrigger.addEventListener("refreshInit", setPad);
-      // petit fallback après rendu images
       setTimeout(setPad, 150);
 
       return () => {
         window.removeEventListener("resize", onResize);
         ScrollTrigger.removeEventListener("refreshInit", setPad);
+        cancelAnimationFrame(raf);
       };
     }, stackRef);
 
@@ -92,10 +104,6 @@ export default function Page() {
 
   return (
     <div className="body-page">
-      <head>
-        <title>Projets - Portfolio</title>
-      </head>
-      {/* Header */}
       <div className="max-w-6xl mx-auto px-4 md:px-6">
         <h3 className="text-3xl md:text-6xl tracking-[-0.06em] pt-20 font-semibold text-white">
           02. Projets
@@ -106,7 +114,6 @@ export default function Page() {
         </p>
       </div>
 
-      {/* Stack sticky */}
       <section className="max-w-6xl mx-auto px-4 md:px-6 mt-10 md:mt-14">
         <div ref={stackRef} className="relative isolate">
           {/* 1 */}
@@ -117,12 +124,12 @@ export default function Page() {
               description="Design Figma d'une application éducative visant à permettre aux étudiants en langue arabe de s'exercer à l’i‘rab à l’aide de l’IA."
               tags={["Figma", "IA", "Mobile"]}
               image={Irab}
-              href="#"
-              mediaFirstMobile={true}
-              reverseDesktop={false}
-              imageFit="cover"
-              priority={false}
-              sticky={false}
+              onOpenModal={() =>
+                setModalData({
+                  muxId: "vmlM7cG37G3971EPRdPkQtDqAjZjhEeB1ZAP4Amz02D00",
+                  description: "Vidéo de présentation du projet I'rab Master.",
+                })
+              }
             />
           </div>
 
@@ -134,12 +141,12 @@ export default function Page() {
               description="Plateforme interne pour relier collègues partout en France, réduire les coûts et l’empreinte carbone."
               tags={["Développement web", "PHP", "HTML5", "CSS3"]}
               image={Klaxon}
-              href="#"
-              mediaFirstMobile={true}
-              reverseDesktop={false}
-              imageFit="cover"
-              priority={false}
-              sticky={false}
+              onOpenModal={() =>
+                setModalData({
+                  muxId: "iyQwz2lDTnUOpsR00lwo0200p9D00Wq2QRz2TpXrwLczQQw.m3u8",
+                  description: "Vidéo du projet covoiturage interne.",
+                })
+              }
             />
           </div>
 
@@ -151,12 +158,12 @@ export default function Page() {
               description="Annuaire régional des artisans avec design aligné sur l’identité de la région."
               tags={["Développement web", "React", "Node.js", "Express", "SQL"]}
               image={Artisan}
-              href="#"
-              mediaFirstMobile={true}
-              reverseDesktop={false}
-              imageFit="cover"
-              priority={false}
-              sticky={false}
+              onOpenModal={() =>
+                setModalData({
+                  muxId: "8UiGzlnCaGkXJDYeFVj99kG02idtn9NVGo5NqAHmfiWY",
+                  description: "Présentation du projet 'Trouve ton artisan'.",
+                })
+              }
             />
           </div>
 
@@ -168,16 +175,42 @@ export default function Page() {
               description="Réservation en ligne des postes d’amarrage, gestion en temps réel."
               tags={["Développement web", "React", "Node.js", "MongoDB"]}
               image={Russel}
-              href="#"
-              mediaFirstMobile={true}
-              reverseDesktop={false}
-              imageFit="cover"
-              priority={false}
-              sticky={false}
+              onOpenModal={() =>
+                setModalData({
+                  muxId: "aFFvpDk4REI9lCHdu1C00fkZJ02025Ig5ybYdaAEk014E5o",
+                  description: "Vidéo du site Dehors !",
+                })
+              }
             />
           </div>
         </div>
       </section>
+
+      {modalData && (
+        <ProjectModal
+          isOpen={!!modalData}
+          onClose={closeModal}
+          muxId={modalData.muxId}
+          description={modalData.description}
+        />
+      )}
+    </div>
+  );
+}
+
+/* ———————————————————— */
+/* Skeleton minimal pour fallback */
+function SkeletonCard() {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-6 md:p-8 animate-pulse">
+      <div className="h-6 w-48 bg-white/10 rounded" />
+      <div className="h-4 w-40 bg-white/10 rounded mt-3" />
+      <div className="h-24 bg-white/10 rounded mt-5" />
+      <div className="flex gap-2 mt-5">
+        <span className="h-7 w-16 bg-white/10 rounded-full" />
+        <span className="h-7 w-20 bg-white/10 rounded-full" />
+        <span className="h-7 w-14 bg-white/10 rounded-full" />
+      </div>
     </div>
   );
 }

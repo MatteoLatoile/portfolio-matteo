@@ -1,4 +1,5 @@
-// app/contact/page.jsx
+"use client";
+import { useState } from "react";
 import {
   FiBriefcase,
   FiMail,
@@ -9,12 +10,44 @@ import {
   FiUser,
 } from "react-icons/fi";
 
-export default function Page() {
+export default function ContactPage() {
+  const [submitting, setSubmitting] = useState(false);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setSubmitting(true);
+
+    const formData = new FormData(e.target);
+    const data = {
+      fullname: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("phone") || null,
+      entreprise: formData.get("company") || null,
+      objet: formData.get("subject"),
+      message: formData.get("message"),
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (res.ok) {
+        alert("Message envoyé ✅");
+        e.target.reset();
+      } else {
+        alert("Erreur ❌");
+      }
+    } catch {
+      alert("Erreur réseau ❌");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
     <div className="body-page pb-20">
-      <head>
-        <title>Contact - Portfolio</title>
-      </head>
       {/* Header */}
       <div className="max-w-6xl mx-auto px-4 md:px-6">
         <h3 className="text-3xl md:text-6xl font-semibold text-white pt-20">
@@ -30,42 +63,38 @@ export default function Page() {
       <section className="max-w-3xl mx-auto px-4 md:px-6 mt-10 md:mt-12">
         <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-6 md:p-8 pb-20">
           <div className="flex items-center gap-3 text-white/90 mb-6">
-            <span className="inline-flex items-center justify-center w-6 h-6 rounded border border-white/20">
-              {/* petit coin/repère visuel */}
-            </span>
+            <span className="inline-flex items-center justify-center w-6 h-6 rounded border border-white/20" />
             <h2 className="text-xl md:text-2xl font-semibold">
               Formulaire de contact
             </h2>
           </div>
 
-          <form action="/api/contact" method="POST" className="space-y-5">
-            {/* Nom */}
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* champs inchangés */}
             <Field id="name" label="Nom complet" Icon={FiUser}>
               <input
                 id="name"
                 name="name"
                 type="text"
-                placeholder="Tapez votre nom ici."
                 autoComplete="name"
                 required
+                placeholder="Tapez votre nom ici."
                 className="w-full rounded-full bg-white/10 border border-white/15 px-4 py-3 text-white placeholder-white/40 outline-none focus:border-white/30"
               />
             </Field>
 
-            {/* Email */}
             <Field id="email" label="Adresse e-mail" Icon={FiMail}>
               <input
                 id="email"
                 name="email"
                 type="email"
-                placeholder="Tapez votre adresse e-mail ici."
                 autoComplete="email"
                 required
+                placeholder="Tapez votre adresse e-mail ici."
                 className="w-full rounded-full bg-white/10 border border-white/15 px-4 py-3 text-white placeholder-white/40 outline-none focus:border-white/30"
               />
             </Field>
 
-            {/* Téléphone (facultatif) */}
             <Field
               id="phone"
               label="N° de téléphone"
@@ -76,13 +105,12 @@ export default function Page() {
                 id="phone"
                 name="phone"
                 type="tel"
-                placeholder="Tapez votre numéro de téléphone ici."
                 autoComplete="tel"
+                placeholder="Tapez votre numéro de téléphone ici."
                 className="w-full rounded-full bg-white/10 border border-white/15 px-4 py-3 text-white placeholder-white/40 outline-none focus:border-white/30"
               />
             </Field>
 
-            {/* Entreprise (facultatif) */}
             <Field
               id="company"
               label="Entreprise"
@@ -93,13 +121,12 @@ export default function Page() {
                 id="company"
                 name="company"
                 type="text"
-                placeholder="Tapez le nom de votre entreprise ici."
                 autoComplete="organization"
+                placeholder="Tapez le nom de votre entreprise ici."
                 className="w-full rounded-full bg-white/10 border border-white/15 px-4 py-3 text-white placeholder-white/40 outline-none focus:border-white/30"
               />
             </Field>
 
-            {/* Objet */}
             <Field id="subject" label="Objet du message" Icon={FiTag}>
               <input
                 id="subject"
@@ -110,7 +137,6 @@ export default function Page() {
               />
             </Field>
 
-            {/* Message */}
             <Field id="message" label="Message" Icon={FiMessageSquare}>
               <textarea
                 id="message"
@@ -125,10 +151,15 @@ export default function Page() {
             <div className="pt-2">
               <button
                 type="submit"
-                className="w-full md:w-auto cursor-pointer inline-flex items-center justify-center gap-2 rounded-full bg-white text-black px-6 md:px-8 py-3 font-medium hover:bg-purple-100 transition-colors"
+                disabled={submitting}
+                className="w-full md:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-white text-black px-6 md:px-8 py-3 font-medium transition-colors hover:bg-purple-100 disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                <FiSend className="inline-block" />
-                Envoyer le message
+                {submitting ? (
+                  <span className="inline-block w-4 h-4 border-2 border-black/40 border-t-black rounded-full animate-spin" />
+                ) : (
+                  <FiSend className="inline-block" />
+                )}
+                {submitting ? "Envoi..." : "Envoyer le message"}
               </button>
             </div>
           </form>
@@ -138,7 +169,6 @@ export default function Page() {
   );
 }
 
-/* --- UI sous-composant --- */
 function Field({ id, label, hint, Icon, children }) {
   return (
     <div>

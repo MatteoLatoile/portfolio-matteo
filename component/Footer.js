@@ -19,7 +19,7 @@ const Footer = () => {
         </div>
         <div>
           <p className="text-center text-white opacity-50 mt-10">
-            © 2025 Abdullah. Tous droits réservés.
+            © 2025 Mattéo. Tous droits réservés.
           </p>
         </div>
       </footer>

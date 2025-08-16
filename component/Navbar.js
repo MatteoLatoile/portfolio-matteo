@@ -9,7 +9,15 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className=" px-6 py-4 fixed z-50 backdrop-blur-2xl top-0 w-full flex items-center justify-between">
+    <nav
+      style={{
+        borderBottom: "4px solid transparent",
+        borderImage:
+          "linear-gradient(80deg,rgba(255, 255, 255, 0.55) 18%, rgba(193, 84, 247, 0.61) 50%, rgba(255, 255, 255, 1) 87%",
+        padding: "10px",
+      }}
+      className=" px-6 py-4 fixed z-50 backdrop-blur-2xl top-0 w-full flex items-center justify-between"
+    >
       {/* Logo */}
       <div className="flex items-center z-50">
         <Image src={Logo} alt="Logo" width={24} height={24} />
@@ -73,13 +81,15 @@ export default function Navbar() {
         </Link>
 
         {/* CV Button */}
-        <button
+        <Link
+          href="./public/cv_matteo_padalino.pdf"
+          target="blank"
           className="bg-white cursor-pointer text-black px-12 tracking-[-6%] py-4 rounded-full mt-3 font-medium text-sm hover:bg-purple-100 transition-colors flex items-center space-x-2 md:mt-0 "
           onClick={() => setIsOpen(false)}
         >
           <span>Voir mon CV</span>
           <Image src={Open} alt="Ouvrir" width={16} height={16} />
-        </button>
+        </Link>
       </div>
     </nav>
   );
