@@ -2,9 +2,7 @@
 
 import Image from "next/image";
 import { useEffect } from "react";
-import BtnGlass from "../../../component/BtnGlass";
 import Mockup from "../../../public/icons/mockup.webp";
-
 // React Icons (blanc)
 import { FaGithub, FaLinkedinIn, FaWhatsapp } from "react-icons/fa";
 import { FiMail, FiMapPin, FiPhone } from "react-icons/fi";
@@ -26,6 +24,7 @@ const hard = [
   "TailwindCSS",
   "Bootstrap",
 ];
+
 const soft = [
   "Créativité",
   "Autonomie",
@@ -60,9 +59,6 @@ export default function AboutPage() {
 
   return (
     <div className="body-page">
-      <head>
-        <title>A propos - Portfolio</title>
-      </head>
       {/* Header */}
       <div className="max-w-6xl mx-auto px-4 md:px-6">
         <h3
@@ -96,7 +92,14 @@ export default function AboutPage() {
               Développeur Fullstack et intégrateur, je conçois des applications
               robustes, performantes et élégantes.
             </p>
-            <BtnGlass href="/contact" text="Me contacter" />
+
+            {/* Bouton "Me contacter" inline (pour éviter l'import de BtnGlass) */}
+            <a
+              href="/contact"
+              className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2 text-sm font-medium text-white/90 hover:bg-white/20 transition"
+            >
+              Me contacter <span>➜</span>
+            </a>
           </Card>
 
           {/* 2) Me concernant (4 cols, SPAN 2 ROWS à droite) */}
@@ -127,7 +130,7 @@ export default function AboutPage() {
             </div>
 
             <div className="mt-5">
-              <p className="text-white/90 tracking-tighter [content-visibility:auto] [contain-intrinsic-size:1px_600px] font-medium">
+              <p className="text-white/90 tracking-titter [content-visibility:auto] [contain-intrinsic-size:1px_600px] font-medium">
                 Softskills
               </p>
               <div className="mt-2 flex flex-wrap gap-2">
@@ -176,26 +179,53 @@ export default function AboutPage() {
               Voir aussi
             </p>
             <div className="flex items-center gap-6">
-              <FaWhatsapp
-                size={24}
-                className="text-white opacity-90 hover:opacity-100 transition"
-                aria-hidden
-              />
-              <FaLinkedinIn
-                size={24}
-                className="text-white opacity-90 hover:opacity-100 transition"
-                aria-hidden
-              />
-              <FaGithub
-                size={24}
-                className="text-white opacity-90 hover:opacity-100 transition"
-                aria-hidden
-              />
-              <SiMalt
-                size={24}
-                className="text-white opacity-90 hover:opacity-100 transition"
-                aria-hidden
-              />
+              <a
+                href="https://wa.me/33667727557"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp"
+              >
+                <FaWhatsapp
+                  size={24}
+                  className="text-white opacity-90 hover:opacity-100 transition"
+                />
+              </a>
+
+              <a
+                href="https://www.linkedin.com/in/mattdev-padalino"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+              >
+                <FaLinkedinIn
+                  size={24}
+                  className="text-white opacity-90 hover:opacity-100 transition"
+                />
+              </a>
+
+              <a
+                href="https://github.com/MatteoLatoile"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub"
+              >
+                <FaGithub
+                  size={24}
+                  className="text-white opacity-90 hover:opacity-100 transition"
+                />
+              </a>
+
+              <a
+                href="https://www.malt.fr/profile/matteopadalino"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Malt"
+              >
+                <SiMalt
+                  size={24}
+                  className="text-white opacity-90 hover:opacity-100 transition"
+                />
+              </a>
             </div>
           </Card>
         </div>
@@ -231,7 +261,7 @@ export default function AboutPage() {
             className="reveal absolute tracking-tighter [content-visibility:auto] [contain-intrinsic-size:1px_600px] md:top-[500px] md:left-[700px] w-1/3 text-[#B0A9C2]"
             style={{ "--d": "180ms" }}
           >
-            <span className="bold text-white tracking-tighter text-2xl">
+            <span className="bold text-white tracking-titter text-2xl">
               Pourquoi passer par Malt ?
             </span>
             <br />
@@ -244,10 +274,10 @@ export default function AboutPage() {
           </p>
 
           <p
-            className="reveal absolute [content-visibility:auto] [contain-intrinsic-size:1px_600px] tracking-tighter top-[1000px] w-1/3 text-[#B0A9C2]"
+            className="reveal absolute [content-visibility:auto] [contain-intrinsic-size:1px_600px] tracking-titter top-[1000px] w-1/3 text-[#B0A9C2]"
             style={{ "--d": "260ms" }}
           >
-            <span className="bold text-white tracking-tighter text-2xl">
+            <span className="bold text-white tracking-titter text-2xl">
               Un cadre pro, une collaboration fluide
             </span>
             <br />
@@ -265,7 +295,7 @@ export default function AboutPage() {
               alt=""
               width={360}
               height={740}
-              sizes="140px, (min-width:640px) 180px, (min-width:768px) 200px, (min-width:1024px) 220px"
+              sizes="(max-width: 639px) 140px, (max-width: 767px) 180px, (max-width: 1023px) 200px, 220px"
               className="block mx-auto h-auto w-[140px] sm:w-[180px] md:w-[200px] lg:w-[220px] animate-float-slow motion-reduce:animate-none"
               priority={false}
             />
@@ -277,14 +307,17 @@ export default function AboutPage() {
           style={{ "--d": "120ms" }}
         >
           <a
-            href="#"
+            href="https://www.malt.fr/profile/matteopadalino"
             target="_blank"
             rel="noopener"
-            className="bg-white tracking-tighter text-black px-8 md:px-10 py-3 md:py-4 rounded-full font-medium text-sm hover:bg-purple-100 transition-colors inline-flex items-center gap-2"
+            className="group bg-white mb-7 tracking-tighter text-black px-8 md:px-10 py-3 md:py-4 
+             rounded-full font-medium text-sm hover:bg-purple-100 transition-colors 
+             inline-flex items-center gap-3"
           >
             Voir mon profil Malt
-            {/* Icône blanche sur fond blanc → invisible, je laisse comme demandé */}
-            <SiMalt size={20} className="text-2xl text-white" aria-hidden />
+            <span className="transition-transform duration-300 group-hover:translate-x-1">
+              ➜
+            </span>
           </a>
         </div>
       </section>

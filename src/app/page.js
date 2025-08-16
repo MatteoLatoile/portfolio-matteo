@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import BtnGlass from "../../component/BtnGlass";
 import Ellipse from "../../public/icons/ellipse-2.svg";
@@ -37,15 +39,51 @@ export default function Home() {
         <div className="md:flex md:gap-8 md:items-center">
           <BtnGlass href="/projets" text="Découvrir mes projets" />
           <div className="flex gap-10 mt-7">
-            {/* ⬇️ Icônes remplacées par React Icons, classes INCHANGÉES */}
-            <FaWhatsapp className="w-[44px] text-white h-[44px] md:w-[24px] md:h-[24px]" />
-            <FaLinkedinIn className="w-[44px] text-white h-[44px] md:w-[24px] md:h-[24px]" />
-            <Image
-              src={Malt}
-              alt=""
-              className="w-[44px] h-[44px] text-white md:w-[24px] md:h-[24px]"
-            />
-            <FaGithub className="w-[44px] text-white h-[44px] md:w-[24px] md:h-[24px]" />
+            {/* WhatsApp */}
+            <a
+              href="https://wa.me/33667727557"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition transform hover:scale-110 hover:opacity-80"
+            >
+              <FaWhatsapp className="w-[44px] h-[44px] md:w-[24px] md:h-[24px] text-white" />
+            </a>
+
+            {/* LinkedIn */}
+            <a
+              href="https://www.linkedin.com/in/mattdev-padalino"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition transform hover:scale-110 hover:opacity-80"
+            >
+              <FaLinkedinIn className="w-[44px] h-[44px] md:w-[24px] md:h-[24px] text-white" />
+            </a>
+
+            {/* Malt */}
+            <a
+              href="https://www.malt.fr/profile/matteopadalino"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition transform hover:scale-110 hover:opacity-80"
+            >
+              <Image
+                src={Malt}
+                alt="Profil Malt"
+                width={44}
+                height={44}
+                className="w-[44px] h-[44px] md:w-[24px] md:h-[24px]"
+              />
+            </a>
+
+            {/* GitHub */}
+            <a
+              href="https://github.com/MatteoLatoile"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition transform hover:scale-110 hover:opacity-80"
+            >
+              <FaGithub className="w-[44px] h-[44px] md:w-[24px] md:h-[24px] text-white" />
+            </a>
           </div>
         </div>
       </div>

@@ -1,12 +1,20 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation"; // ✅ pour détecter la page active
 import { useState } from "react";
 import Logo from "../public/icons/Logo.svg";
 import Open from "../public/icons/icon_see.svg";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname(); // ✅ récupère la route actuelle
+
+  // fonction pour appliquer la couleur active
+  const linkClass = (path) =>
+    `tracking-[-6%] transition-colors text-6xl md:text-[14px] ${
+      pathname === path ? "text-white" : "text-[#B0A9C2] hover:text-white"
+    }`;
 
   return (
     <nav
@@ -16,7 +24,7 @@ export default function Navbar() {
           "linear-gradient(80deg,rgba(255, 255, 255, 0.55) 18%, rgba(193, 84, 247, 0.61) 50%, rgba(255, 255, 255, 1) 87%",
         padding: "10px",
       }}
-      className=" px-6 py-4 fixed z-50 backdrop-blur-2xl top-0 w-full flex items-center justify-between"
+      className="px-6 py-3 fixed z-50 backdrop-blur-2xl top-0 w-full flex items-center justify-between"
     >
       {/* Logo */}
       <div className="flex items-center z-50">
@@ -47,49 +55,51 @@ export default function Navbar() {
 
       {/* Navigation Links */}
       <div
-        className={`fixed inset-0 flex flex-col items-center justify-center space-y-8 text-[#fff] md:text-[#B0A9C2] bg-[#2A003F] transform transition-transform duration-300 md:static md:flex-row md:space-y-0 md:space-x-8 md:bg-transparent ${
-          isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
-        }`}
+        className={`fixed inset-0 flex flex-col items-center justify-center space-y-8 bg-[#2A003F] 
+        md:space-y-0 md:space-x-8 md:flex-row md:static md:bg-transparent transform transition-transform duration-300 
+        ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
       >
         <Link
           href="/"
-          className="hover:text-white  tracking-[-6%] transition-colors text-6xl md:text-[16px]"
+          className={linkClass("/")}
           onClick={() => setIsOpen(false)}
         >
           01. Accueil
         </Link>
         <Link
           href="/projets"
-          className="hover:text-white tracking-[-6%] transition-colors text-6xl md:text-[16px]"
+          className={linkClass("/projets")}
           onClick={() => setIsOpen(false)}
         >
           02. Projets
         </Link>
         <Link
           href="/about"
-          className="hover:text-white tracking-[-6%] transition-colors text-6xl md:text-[16px]"
+          className={linkClass("/about")}
           onClick={() => setIsOpen(false)}
         >
           03. About
         </Link>
         <Link
           href="/contact"
-          className="hover:text-white tracking-[-6%] transition-colors text-6xl md:text-[16px]"
+          className={linkClass("/contact")}
           onClick={() => setIsOpen(false)}
         >
           04. Contact
         </Link>
 
         {/* CV Button */}
-        <Link
+        <a
           href="./public/cv_matteo_padalino.pdf"
-          target="blank"
-          className="bg-white cursor-pointer text-black px-12 tracking-[-6%] py-4 rounded-full mt-3 font-medium text-sm hover:bg-purple-100 transition-colors flex items-center space-x-2 md:mt-0 "
+          target="_blank"
+          download="CV_Matteo_Padalino.pdf"
+          rel="noopener noreferrer"
+          className="bg-white cursor-pointer text-black px-12 tracking-[-6%] py-4 rounded-full mt-3 font-medium text-[14px] hover:bg-purple-100 transition-colors flex items-center space-x-2 md:mt-0"
           onClick={() => setIsOpen(false)}
         >
           <span>Voir mon CV</span>
           <Image src={Open} alt="Ouvrir" width={16} height={16} />
-        </Link>
+        </a>
       </div>
     </nav>
   );
