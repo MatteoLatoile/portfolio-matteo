@@ -1,12 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect } from "react";
-import Mockup from "../../../public/icons/mockup.webp";
 // React Icons (blanc)
 import { FaGithub, FaLinkedinIn, FaWhatsapp } from "react-icons/fa";
 import { FiMail, FiMapPin, FiPhone } from "react-icons/fi";
 import { SiMalt } from "react-icons/si";
+import Mockup from "../../../public/icons/mockup.webp";
 
 const hard = [
   "HTML",
@@ -34,43 +33,14 @@ const soft = [
 ];
 
 export default function AboutPage() {
-  // ---- Minimal JS: observer pour .reveal (fade+slide). Unobserve après entrée.
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const els = document.querySelectorAll(".reveal");
-    if (!els.length) return;
-
-    const io = new IntersectionObserver(
-      (entries, obs) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            e.target.classList.add("in");
-            obs.unobserve(e.target);
-          }
-        }
-      },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.12 }
-    );
-
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
-
   return (
     <div className="body-page">
       {/* Header */}
       <div className="max-w-6xl mx-auto px-4 md:px-6">
-        <h3
-          className="reveal text-3xl md:text-6xl tracking-tighter pt-20 font-semibold text-white"
-          style={{ "--d": "0ms" }}
-        >
+        <h3 className="reveal delay-0 text-3xl md:text-6xl tracking-tighter pt-20 font-semibold text-white">
           03. A&nbsp;propos
         </h3>
-        <p
-          className="reveal mt-2 text-sm md:text-base tracking-tighter [content-visibility:auto] [contain-intrinsic-size:1px_600px] text-[#B0A9C2]"
-          style={{ "--d": "120ms" }}
-        >
+        <p className="reveal delay-100 mt-2 text-sm md:text-base tracking-tighter text-[#B0A9C2]">
           Un peu de contexte, un peu de parcours, et ce qui me définit dans mon
           travail.
         </p>
@@ -80,20 +50,16 @@ export default function AboutPage() {
       <section className="max-w-6xl mx-auto px-4 md:px-6 mt-8 md:mt-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
           {/* 1) Intro (8 cols) */}
-          <Card
-            className="reveal md:col-span-8 min-h-[320px]"
-            style={{ "--d": "0ms" }}
-          >
+          <Card className="reveal delay-0 md:col-span-8 min-h-[320px]">
             <h4 className="text-4xl md:text-5xl font-semibold text-white/90 tracking-tight">
               <span className="opacity-90 tracking-tighter">Mattéo</span>
               <span className="opacity-60 tracking-tighter"> PADALINO</span>
             </h4>
-            <p className="mt-4 text-sm md:text-base tracking-tighter [content-visibility:auto] [contain-intrinsic-size:1px_600px] text-[#EDE9F7]/80 leading-relaxed">
+            <p className="mt-4 text-sm md:text-base tracking-tighter text-[#EDE9F7]/80 leading-relaxed">
               Développeur Fullstack et intégrateur, je conçois des applications
               robustes, performantes et élégantes.
             </p>
 
-            {/* Bouton "Me contacter" inline (pour éviter l'import de BtnGlass) */}
             <a
               href="/contact"
               className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2 text-sm font-medium text-white/90 hover:bg-white/20 transition"
@@ -102,21 +68,16 @@ export default function AboutPage() {
             </a>
           </Card>
 
-          {/* 2) Me concernant (4 cols, SPAN 2 ROWS à droite) */}
-          <Card
-            className="reveal md:col-span-4 md:row-span-2"
-            style={{ "--d": "100ms" }}
-          >
+          {/* 2) Me concernant */}
+          <Card className="reveal delay-100 md:col-span-4 md:row-span-2">
             <h5 className="text-white text-xl font-semibold">Me concernant,</h5>
-            <p className="mt-3 text-sm tracking-tighter [content-visibility:auto] [contain-intrinsic-size:1px_600px] text-[#EDE9F7]/80 leading-relaxed">
+            <p className="mt-3 text-sm tracking-tighter text-[#EDE9F7]/80 leading-relaxed">
               Créatif, polyvalent, organisé. Mon objectif : faire avancer les
               projets efficacement.
             </p>
 
             <div className="mt-5">
-              <p className="text-white/90 tracking-tighter [content-visibility:auto] [contain-intrinsic-size:1px_600px] font-medium">
-                Hardskills
-              </p>
+              <p className="text-white/90 font-medium">Hardskills</p>
               <div className="mt-2 flex flex-wrap gap-2">
                 {hard.map((t) => (
                   <span
@@ -130,9 +91,7 @@ export default function AboutPage() {
             </div>
 
             <div className="mt-5">
-              <p className="text-white/90 tracking-titter [content-visibility:auto] [contain-intrinsic-size:1px_600px] font-medium">
-                Softskills
-              </p>
+              <p className="text-white/90 font-medium">Softskills</p>
               <div className="mt-2 flex flex-wrap gap-2">
                 {soft.map((t) => (
                   <span
@@ -146,11 +105,8 @@ export default function AboutPage() {
             </div>
           </Card>
 
-          {/* 3) Contact (4 cols) — rangée 2, gauche */}
-          <Card
-            className="reveal md:col-span-4 min-h-[220px]"
-            style={{ "--d": "200ms" }}
-          >
+          {/* 3) Contact */}
+          <Card className="reveal delay-200 md:col-span-4 min-h-[220px]">
             <div className="space-y-4">
               <ContactRow
                 Icon={FiMail}
@@ -164,62 +120,40 @@ export default function AboutPage() {
               />
               <ContactRow
                 Icon={FiMapPin}
-                label="Entreprise"
+                label="Localisation"
                 value="Saint-Étienne"
               />
             </div>
           </Card>
 
-          {/* 4) Voir aussi (4 cols) — rangée 2, centre */}
-          <Card
-            className="reveal md:col-span-4 min-h-[220px]"
-            style={{ "--d": "280ms" }}
-          >
-            <p className="text-white/90 tracking-tighter [content-visibility:auto] [contain-intrinsic-size:1px_600px] font-medium mb-4">
-              Voir aussi
-            </p>
+          {/* 4) Voir aussi */}
+          <Card className="reveal delay-300 md:col-span-4 min-h-[220px]">
+            <p className="text-white/90 font-medium mb-4">Voir aussi</p>
             <div className="flex items-center gap-6">
-              <a
-                href="https://wa.me/33667727557"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp"
-              >
+              <a href="https://wa.me/33667727557" target="_blank">
                 <FaWhatsapp
                   size={24}
                   className="text-white opacity-90 hover:opacity-100 transition"
                 />
               </a>
-
               <a
                 href="https://www.linkedin.com/in/mattdev-padalino"
                 target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
               >
                 <FaLinkedinIn
                   size={24}
                   className="text-white opacity-90 hover:opacity-100 transition"
                 />
               </a>
-
-              <a
-                href="https://github.com/MatteoLatoile"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub"
-              >
+              <a href="https://github.com/MatteoLatoile" target="_blank">
                 <FaGithub
                   size={24}
                   className="text-white opacity-90 hover:opacity-100 transition"
                 />
               </a>
-
               <a
                 href="https://www.malt.fr/profile/matteopadalino"
                 target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Malt"
               >
                 <SiMalt
                   size={24}
@@ -231,86 +165,71 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* section mon profil malt */}
+      {/* Profil Malt */}
       <section className="px-4 md:mt-40 md:px-20">
-        <h3
-          className="reveal text-3xl tracking-tighter md:text-4xl mt-20 mb-20 font-semibold text-white"
-          style={{ "--d": "0ms" }}
-        >
+        <h3 className="reveal delay-0 text-3xl md:text-4xl mt-20 mb-20 font-semibold text-white">
           Mon profil Malt
         </h3>
 
         <div className="relative h-[1700px]">
-          <p
-            className="reveal absolute tracking-tighter [content-visibility:auto] [contain-intrinsic-size:1px_600px] top-0 w-1/3 text-[#B0A9C2]"
-            style={{ "--d": "80ms" }}
-          >
-            <span className="bold text-white tracking-tighter text-2xl">
-              Malt, c’est quoi ?
-            </span>
+          <p className="reveal delay-100 absolute top-80 md:top-0 md:w-1/3 text-[#B0A9C2]">
+            <span className="bold text-white text-2xl">Malt, c’est quoi ?</span>
             <br />
             <br />
-            Malt est une plateforme qui connecte les freelances aux entreprises,
-            de manière simple, transparente et sécurisée. Elle permet de
-            collaborer efficacement sur des missions variées, en toute
-            confiance, grâce à un cadre professionnel pensé pour les
-            indépendants et les clients.
+            Malt est une plateforme française qui connecte les freelances avec
+            les entreprises en quête de compétences spécifiques. Elle facilite
+            les collaborations en mettant à disposition un espace sécurisé pour
+            publier des missions, gérer les contrats, et effectuer les
+            paiements. Plus de 500 000 freelances y sont inscrits, ce qui en
+            fait un acteur majeur du freelancing en Europe.
           </p>
 
-          <p
-            className="reveal absolute tracking-tighter [content-visibility:auto] [contain-intrinsic-size:1px_600px] md:top-[500px] md:left-[700px] w-1/3 text-[#B0A9C2]"
-            style={{ "--d": "180ms" }}
-          >
-            <span className="bold text-white tracking-titter text-2xl">
+          <p className="reveal delay-200 absolute top-[700px] md:top-[500px] md:left-[700px] md:w-1/3 text-[#B0A9C2]">
+            <span className="bold text-white text-2xl">
               Pourquoi passer par Malt ?
             </span>
             <br />
             <br />
-            Travailler via Malt, c’est bénéficier d’un système clair : contrat,
-            paiement sécurisé, assurance, et historique des missions. Vous avez
-            accès aux avis de mes précédents clients, à mes tarifs, à mes
-            compétences détaillées, et vous pouvez lancer une mission en
-            quelques clics, sans friction administrative.
+            Passer par Malt, c’est bénéficier d’un cadre professionnel clair.
+            Toutes les missions sont encadrées par un contrat numérique, le
+            paiement est sécurisé via un système d’entiercement, et vous
+            bénéficiez d’une assurance en cas de problème. En tant que
+            freelance, je suis noté à la fin de chaque mission, ce qui crée une
+            vraie dynamique de confiance et de transparence.
           </p>
 
-          <p
-            className="reveal absolute [content-visibility:auto] [contain-intrinsic-size:1px_600px] tracking-titter top-[1000px] w-1/3 text-[#B0A9C2]"
-            style={{ "--d": "260ms" }}
-          >
-            <span className="bold text-white tracking-titter text-2xl">
+          <p className="reveal delay-300 absolute top-3/4 md:top-[1000px] md:w-1/3 text-[#B0A9C2]">
+            <span className="bold text-white text-2xl">
               Un cadre pro, une collaboration fluide
             </span>
             <br />
             <br />
-            En passant par Malt, vous vous assurez une collaboration cadrée,
-            rapide à mettre en place, avec la garantie d’un accompagnement
-            sérieux. C’est la manière la plus simple de lancer une mission avec
-            moi, tout en gardant un suivi clair du projet.
+            En utilisant Malt, vous éliminez les frictions habituelles : pas
+            besoin de gérer la paperasse, les devis, ou les relances de
+            paiement. Tout est centralisé sur la plateforme. Résultat : vous
+            gagnez du temps, vous évitez les erreurs, et vous vous concentrez
+            sur l’essentiel — faire avancer votre projet. C’est une
+            collaboration simple, rapide et efficace.
           </p>
 
-          {/* phone sticky — centré + taille maîtrisée + float léger */}
           <div className="sticky top-20 z-10 w-full">
             <Image
               src={Mockup}
-              alt=""
+              alt="Mockup téléphone"
               width={360}
               height={740}
-              sizes="(max-width: 639px) 140px, (max-width: 767px) 180px, (max-width: 1023px) 200px, 220px"
-              className="block mx-auto h-auto w-[140px] sm:w-[180px] md:w-[200px] lg:w-[220px] animate-float-slow motion-reduce:animate-none"
-              priority={false}
+              className="block mx-auto w-[140px] sm:w-[180px] md:w-[200px] lg:w-[220px] animate-float-slow"
+              unoptimized
             />
           </div>
         </div>
 
-        <div
-          className="reveal mt-20 flex justify-center"
-          style={{ "--d": "120ms" }}
-        >
+        <div className="reveal delay-200 mt-20 flex justify-center">
           <a
             href="https://www.malt.fr/profile/matteopadalino"
             target="_blank"
             rel="noopener"
-            className="group bg-white mb-7 tracking-tighter text-black px-8 md:px-10 py-3 md:py-4 
+            className="group bg-white mb-7 text-black px-14 md:px-10 py-4 md:py-4 
              rounded-full font-medium text-sm hover:bg-purple-100 transition-colors 
              inline-flex items-center gap-3"
           >
@@ -321,48 +240,14 @@ export default function AboutPage() {
           </a>
         </div>
       </section>
-
-      {/* Styles minimalistes pour animations (global) */}
-      <style jsx global>{`
-        @media (prefers-reduced-motion: no-preference) {
-          .reveal {
-            opacity: 0;
-            transform: translateY(14px);
-            transition: opacity 600ms cubic-bezier(0.22, 1, 0.36, 1)
-                var(--d, 0ms),
-              transform 600ms cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms);
-            will-change: opacity, transform;
-          }
-          .reveal.in {
-            opacity: 1;
-            transform: translateY(0);
-          }
-          @keyframes float-slow {
-            0% {
-              transform: translateY(0px);
-            }
-            50% {
-              transform: translateY(-6px);
-            }
-            100% {
-              transform: translateY(0px);
-            }
-          }
-          .animate-float-slow {
-            animation: float-slow 6s ease-in-out infinite;
-            will-change: transform;
-          }
-        }
-      `}</style>
     </div>
   );
 }
 
 /* UI helpers */
-function Card({ children, className = "", ...props }) {
+function Card({ children, className = "" }) {
   return (
     <div
-      {...props}
       className={
         "rounded-2xl border border-white/10 bg-white/5 ring-1 ring-white/5 " +
         "p-6 md:p-8 flex flex-col " +
@@ -374,7 +259,6 @@ function Card({ children, className = "", ...props }) {
   );
 }
 
-// prend un composant d’icône React, blanc, taille 20
 function ContactRow({ Icon, label, value }) {
   return (
     <div className="flex items-start gap-3">

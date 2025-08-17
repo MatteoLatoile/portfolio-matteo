@@ -1,9 +1,7 @@
 "use client";
 
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import dynamic from "next/dynamic";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 const ProjectCard = dynamic(() => import("../../../component/ProjectCard"), {
   ssr: false,
@@ -13,7 +11,7 @@ const ProjectModal = dynamic(() => import("../../../component/ProjectModal"), {
   ssr: false,
 });
 
-import Russel from "../../../public/projets/catway.webp";
+import Dehors from "../../../public/projets/dehors.webp";
 import Irab from "../../../public/projets/projet_irab_master.webp";
 import Klaxon from "../../../public/projets/touche_pas_au_klaxon.webp";
 import Artisan from "../../../public/projets/trouve_ton_artisan.webp";
@@ -22,85 +20,6 @@ export default function ProjetPage() {
   const stackRef = useRef(null);
   const [modalData, setModalData] = useState(null);
   const closeModal = () => setModalData(null);
-
-  useLayoutEffect(() => {
-    if (typeof window === "undefined") return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    const el = stackRef.current;
-    const ctx = gsap.context(() => {
-      const items = gsap.utils.toArray(".stack-item");
-
-      items.forEach((card, i) => {
-        gsap.to(card, {
-          scale: 0.985,
-          ease: "none",
-          scrollTrigger: {
-            trigger: card,
-            start: "top top+=96",
-            end: "bottom top+=96",
-            scrub: true,
-          },
-        });
-
-        if (i > 0) {
-          const prev = items[i - 1];
-          gsap.fromTo(
-            prev,
-            { opacity: 1, filter: "blur(0px)" },
-            {
-              opacity: 0.85,
-              filter: "blur(0.4px)",
-              ease: "none",
-              scrollTrigger: {
-                trigger: card,
-                start: "top center+=60",
-                end: "top top+=96",
-                scrub: true,
-              },
-            }
-          );
-        }
-      });
-
-      const setPad = () => {
-        if (!el) return;
-        const last = el.querySelector(".stack-item:last-child");
-        if (!last) return;
-
-        const styles = getComputedStyle(last);
-        const topSticky = parseFloat(styles.top) || 0;
-        const lastH = last.getBoundingClientRect().height;
-        const vh = window.innerHeight;
-
-        const pb = Math.max(0, vh - topSticky - lastH);
-        el.style.paddingBottom = `${pb}px`;
-        ScrollTrigger.refresh();
-      };
-
-      setPad();
-
-      let raf;
-      const onResize = () => {
-        cancelAnimationFrame(raf);
-        raf = requestAnimationFrame(setPad);
-      };
-
-      window.addEventListener("resize", onResize);
-      ScrollTrigger.addEventListener("refreshInit", setPad);
-      setTimeout(setPad, 150);
-
-      return () => {
-        window.removeEventListener("resize", onResize);
-        ScrollTrigger.removeEventListener("refreshInit", setPad);
-        cancelAnimationFrame(raf);
-      };
-    }, stackRef);
-
-    return () => ctx.revert();
-  }, []);
 
   return (
     <div className="body-page">
@@ -170,11 +89,17 @@ export default function ProjetPage() {
           {/* 4 */}
           <div className="mt-16 md:mt-28 stack-item sticky top-16 md:top-24 z-40 will-change-transform">
             <ProjectCard
-              title="Russel Marina"
-              subtitle="Réservation de catways"
-              description="Réservation en ligne des postes d’amarrage, gestion en temps réel."
-              tags={["Développement web", "React", "Node.js", "MongoDB"]}
-              image={Russel}
+              title="Dehors !"
+              subtitle="Site d'Escape Game"
+              description="Site d'escape game à Paris, avec pour exercice : générer des cards d'une DB JSON."
+              tags={[
+                "Développement web",
+                "HTML5",
+                "CSS3",
+                "Javascript",
+                "JSON",
+              ]}
+              image={Dehors}
               onOpenModal={() =>
                 setModalData({
                   muxId: "aFFvpDk4REI9lCHdu1C00fkZJ02025Ig5ybYdaAEk014E5o",

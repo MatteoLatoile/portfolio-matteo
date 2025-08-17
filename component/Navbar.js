@@ -90,9 +90,8 @@ export default function Navbar() {
 
         {/* CV Button */}
         <a
-          href="./public/cv_matteo_padalino.pdf"
+          href="/cv_matteo_padalino_stage.pdf"
           target="_blank"
-          download="CV_Matteo_Padalino.pdf"
           rel="noopener noreferrer"
           className="bg-white cursor-pointer text-black px-12 tracking-[-6%] py-4 rounded-full mt-3 font-medium text-[14px] hover:bg-purple-100 transition-colors flex items-center space-x-2 md:mt-0"
           onClick={() => setIsOpen(false)}

@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import {
   FiBriefcase,
@@ -50,17 +51,17 @@ export default function ContactPage() {
     <div className="body-page pb-20">
       {/* Header */}
       <div className="max-w-6xl mx-auto px-4 md:px-6">
-        <h3 className="text-3xl md:text-6xl font-semibold text-white pt-20">
+        <h3 className="reveal delay-0 text-3xl md:text-6xl font-semibold text-white pt-20">
           04. Contactez-moi
         </h3>
-        <p className="mt-3 text-sm md:text-base text-[#B0A9C2] max-w-2xl">
+        <p className="reveal delay-100 mt-3 text-sm md:text-base text-[#B0A9C2] max-w-2xl">
           Chaque projet est une solution sur-mesure, pensée pour l’utilisateur
           et bâtie avec rigueur. Dites-moi ce dont vous avez besoin — on avance.
         </p>
       </div>
 
       {/* Form */}
-      <section className="max-w-3xl mx-auto px-4 md:px-6 mt-10 md:mt-12">
+      <section className="reveal delay-200 max-w-3xl mx-auto px-4 md:px-6 mt-10 md:mt-12">
         <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-6 md:p-8 pb-20">
           <div className="flex items-center gap-3 text-white/90 mb-6">
             <span className="inline-flex items-center justify-center w-6 h-6 rounded border border-white/20" />
@@ -70,7 +71,6 @@ export default function ContactPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* champs inchangés */}
             <Field id="name" label="Nom complet" Icon={FiUser}>
               <input
                 id="name"
@@ -152,7 +152,7 @@ export default function ContactPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full md:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-white text-black px-6 md:px-8 py-3 font-medium transition-colors hover:bg-purple-100 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full md:w-auto inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-white text-black px-6 md:px-8 py-3 font-medium transition-transform transition-colors duration-300 hover:bg-purple-100 hover:scale-[1.03] disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {submitting ? (
                   <span className="inline-block w-4 h-4 border-2 border-black/40 border-t-black rounded-full animate-spin" />
