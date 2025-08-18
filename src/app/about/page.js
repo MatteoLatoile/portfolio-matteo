@@ -72,8 +72,8 @@ export default function AboutPage() {
           <Card className="reveal delay-100 md:col-span-4 md:row-span-2">
             <h5 className="text-white text-xl font-semibold">Me concernant,</h5>
             <p className="mt-3 text-sm tracking-tighter text-[#EDE9F7]/80 leading-relaxed">
-              Créatif, polyvalent, organisé. Mon objectif : faire avancer les
-              projets efficacement.
+              Créatif dans l’approche, carré dans l’exécution. Mon but : faire
+              avancer les projets sans tourner en rond.
             </p>
 
             <div className="mt-5">

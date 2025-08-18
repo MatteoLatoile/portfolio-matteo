@@ -1,18 +1,23 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation"; // ✅ pour détecter la page active
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import Logo from "../public/icons/Logo.svg";
 import Open from "../public/icons/icon_see.svg";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const pathname = usePathname(); // ✅ récupère la route actuelle
+  const pathname = usePathname();
 
-  // fonction pour appliquer la couleur active
+  // Bloque le scroll quand le menu est ouvert
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "";
+  }, [isOpen]);
+
+  // Classe dynamique pour les liens
   const linkClass = (path) =>
-    `tracking-[-6%] transition-colors text-6xl md:text-[14px] ${
+    `tracking-[-6%] transition-colors text-2xl md:text-[14px] ${
       pathname === path ? "text-white" : "text-[#B0A9C2] hover:text-white"
     }`;
 
@@ -55,8 +60,8 @@ export default function Navbar() {
 
       {/* Navigation Links */}
       <div
-        className={`fixed inset-0 flex flex-col items-center justify-center space-y-8 bg-[#2A003F] 
-        md:space-y-0 md:space-x-8 md:flex-row md:static md:bg-transparent transform transition-transform duration-300 
+        className={`fixed inset-0 flex flex-col items-center justify-center space-y-8 pt-24 bg-[#2A003F] 
+        md:space-y-0 md:space-x-8 md:flex-row md:static md:bg-transparent md:pt-0 transform transition-transform duration-300 
         ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
       >
         <Link
