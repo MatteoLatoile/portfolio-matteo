@@ -13,93 +13,107 @@ export default function Navbar() {
   // Bloque le scroll quand le menu est ouvert
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => (document.body.style.overflow = "");
   }, [isOpen]);
 
-  // Classe dynamique pour les liens
   const linkClass = (path) =>
     `tracking-[-6%] transition-colors text-2xl md:text-[14px] ${
       pathname === path ? "text-white" : "text-[#B0A9C2] hover:text-white"
     }`;
 
   return (
-    <nav
-      style={{
-        borderBottom: "4px solid transparent",
-        borderImage:
-          "linear-gradient(80deg,rgba(255, 255, 255, 0.55) 18%, rgba(193, 84, 247, 0.61) 50%, rgba(255, 255, 255, 1) 87%",
-        padding: "10px",
-      }}
-      className="px-6 py-3 fixed z-50 backdrop-blur-2xl top-0 w-full flex items-center justify-between"
-    >
-      {/* Logo */}
-      <div className="flex items-center z-50">
-        <Image src={Logo} alt="Logo" width={24} height={24} />
+    <nav className="fixed inset-x-0 top-0 z-50">
+      {/* Fond du header pour garantir le contraste du burger sur mobile */}
+      <div
+        className="mx-auto px-6 py-3 flex items-center justify-between border-b border-white/10
+                      bg-[#0B0013]/60 backdrop-blur-xl supports-[backdrop-filter]:bg-[#0B0013]/40"
+      >
+        {/* Logo */}
+        <div className="flex items-center z-[60]">
+          <Image src={Logo} alt="Logo" width={24} height={24} />
+        </div>
+
+        {/* Bouton burger */}
+        <button
+          type="button"
+          aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
+          aria-expanded={isOpen}
+          onClick={() => setIsOpen((s) => !s)}
+          className="md:hidden relative z-[60] h-10 w-10 grid place-items-center rounded-lg
+                     focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+        >
+          {/* Icône burger en 3 barres absolument positionnées */}
+          <span className="relative block h-5 w-6">
+            <span
+              className={`absolute left-0 top-0 block h-[2px] w-6 rounded bg-white transition-transform duration-300
+                         ${isOpen ? "translate-y-[9px] rotate-45" : ""}`}
+            />
+            <span
+              className={`absolute left-0 top-1/2 block h-[2px] w-6 -translate-y-1/2 rounded bg-white transition-opacity duration-300
+                         ${isOpen ? "opacity-0" : "opacity-100"}`}
+            />
+            <span
+              className={`absolute left-0 bottom-0 block h-[2px] w-6 rounded bg-white transition-transform duration-300
+                         ${isOpen ? "-translate-y-[9px] -rotate-45" : ""}`}
+            />
+          </span>
+        </button>
+
+        {/* Liens desktop */}
+        <div className="hidden md:flex md:items-center md:gap-8">
+          <Link href="/" className={linkClass("/")}>
+            01. Accueil
+          </Link>
+          <Link href="/projets" className={linkClass("/projets")}>
+            02. Projets
+          </Link>
+          <Link href="/about" className={linkClass("/about")}>
+            03. About
+          </Link>
+          <Link href="/contact" className={linkClass("/contact")}>
+            04. Contact
+          </Link>
+          <a
+            href="/cv_matteo_padalino_stage.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-white cursor-pointer text-black px-6 py-2 rounded-full font-medium text-[14px]
+                       hover:bg-purple-100 transition-colors inline-flex items-center gap-2"
+          >
+            <span>Voir mon CV</span>
+            <Image src={Open} alt="Ouvrir" width={16} height={16} />
+          </a>
+        </div>
       </div>
 
-      {/* Menu burger (mobile) */}
-      <button
-        className="md:hidden flex flex-col justify-between w-6 h-5 z-50 focus:outline-none"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <span
-          className={`block h-0.5 bg-white transition-transform duration-300 ${
-            isOpen ? "rotate-45 translate-y-2" : ""
-          }`}
-        ></span>
-        <span
-          className={`block h-0.5 bg-white transition-opacity duration-300 ${
-            isOpen ? "opacity-0" : "opacity-100"
-          }`}
-        ></span>
-        <span
-          className={`block h-0.5 bg-white transition-transform duration-300 ${
-            isOpen ? "-rotate-45 -translate-y-2" : ""
-          }`}
-        ></span>
-      </button>
-
-      {/* Navigation Links */}
+      {/* Menu mobile plein écran */}
       <div
-        className={`fixed inset-0 flex flex-col items-center justify-center space-y-8 pt-24 bg-[#2A003F] 
-        md:space-y-0 md:space-x-8 md:flex-row md:static md:bg-transparent md:pt-0 transform transition-transform duration-300 
-        ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
+        className={`fixed inset-0 z-40 flex flex-col items-center justify-center gap-8 pt-24
+                    bg-[#2A003F] transition-transform duration-300
+                    ${isOpen ? "translate-x-0" : "-translate-x-full"}
+                    md:hidden`}
+        // évite de capter les clics quand fermé
+        style={{ pointerEvents: isOpen ? "auto" : "none" }}
+        onClick={() => setIsOpen(false)}
       >
-        <Link
-          href="/"
-          className={linkClass("/")}
-          onClick={() => setIsOpen(false)}
-        >
+        <Link href="/" className={linkClass("/")}>
           01. Accueil
         </Link>
-        <Link
-          href="/projets"
-          className={linkClass("/projets")}
-          onClick={() => setIsOpen(false)}
-        >
+        <Link href="/projets" className={linkClass("/projets")}>
           02. Projets
         </Link>
-        <Link
-          href="/about"
-          className={linkClass("/about")}
-          onClick={() => setIsOpen(false)}
-        >
+        <Link href="/about" className={linkClass("/about")}>
           03. About
         </Link>
-        <Link
-          href="/contact"
-          className={linkClass("/contact")}
-          onClick={() => setIsOpen(false)}
-        >
+        <Link href="/contact" className={linkClass("/contact")}>
           04. Contact
         </Link>
-
-        {/* CV Button */}
         <a
           href="/cv_matteo_padalino_stage.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-white cursor-pointer text-black px-12 tracking-[-6%] py-4 rounded-full mt-3 font-medium text-[14px] hover:bg-purple-100 transition-colors flex items-center space-x-2 md:mt-0"
-          onClick={() => setIsOpen(false)}
+          className="bg-white cursor-pointer text-black md:px-16 tracking-[-6%] md:py-8 rounded-full font-medium text-[14px]
+                     hover:bg-purple-100 transition-colors inline-flex items-center gap-2"
         >
           <span>Voir mon CV</span>
           <Image src={Open} alt="Ouvrir" width={16} height={16} />
