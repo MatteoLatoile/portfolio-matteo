@@ -28,8 +28,7 @@ export default function ProjetPage() {
           02. Projets
         </h3>
         <p className="mt-2 text-sm md:text-base text-[#B0A9C2] max-w-2xl">
-          Sélection de projets. Chevauchement sticky propre (les suivantes
-          passent AU-DESSUS).
+          Sélection de projets.
         </p>
       </div>
 
