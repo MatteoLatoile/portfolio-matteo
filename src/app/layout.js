@@ -16,9 +16,46 @@ const instrumentDisplay = Instrument_Sans({
 });
 
 export const metadata = {
-  title: "Portfolio",
-  description: "Portfolio Dev",
-  icons: { icon: "/favicon.png" },
+  title: "Portfolio - Matteo Padalino",
+  description:
+    "Portfolio de Matteo Padalino, développeur fullstack et intégrateur.",
+  keywords: [
+    "Portfolio",
+    "Développeur",
+    "Fullstack",
+    "React",
+    "Next.js",
+    "Matteo Padalino",
+  ],
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/apple-touch-icon.png",
+  },
+  openGraph: {
+    title: "Portfolio - Matteo Padalino",
+    description:
+      "Découvrez mes projets, compétences et parcours en développement web fullstack.",
+    url: "https://matteopadalino.dev", // remplace par ton domaine
+    siteName: "Portfolio Matteo Padalino",
+    images: [
+      {
+        url: "/seo_img.png", // place ton image SEO dans /public
+        width: 1200,
+        height: 630,
+        alt: "Logo et identité visuelle de Matteo Padalino",
+      },
+    ],
+    locale: "fr_FR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Portfolio - Matteo Padalino",
+    description:
+      "Découvrez mes projets, compétences et parcours en développement web fullstack.",
+    images: ["/seo_img.png"],
+  },
 };
 
 export default function RootLayout({ children }) {
