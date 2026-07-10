@@ -9,11 +9,11 @@ export default function ProjectCard({
   subtitle,
   description,
   tags = [],
-  image, // import statique OU string "/images/..."
+  image,
   href = "#",
   mediaFirstMobile = true,
   reverseDesktop = false,
-  imageFit = "cover", // "cover" | "contain"
+  imageFit = "cover",
   priority = false,
   sticky = false,
   stickyTop = "top-24",
@@ -24,74 +24,88 @@ export default function ProjectCard({
   const mediaOrder = mediaFirstMobile
     ? "order-1 md:order-2"
     : "order-2 md:order-1";
+
   const textOrder = mediaFirstMobile
     ? "order-2 md:order-1"
     : "order-1 md:order-2";
+
   const fitClass = imageFit === "contain" ? "object-contain" : "object-cover";
   const stickyCls = sticky ? `sticky ${stickyTop}` : "";
 
-  // refs internes à animer
   const cardRef = useRef(null);
   const mediaRef = useRef(null);
 
-  const [revealed, setRevealed] = useState(false); // pour le stagger interne
+  const [revealed, setRevealed] = useState(false);
   const activeRef = useRef(false);
   const rafRef = useRef(0);
 
-  // Parallax image + reveal interne
   useEffect(() => {
     if (typeof window === "undefined") return;
+
     const reduce = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
     const el = cardRef.current;
     const media = mediaRef.current;
+
     if (!el || !media) return;
 
-    // ---- Reveal interne (une fois)
-    const io = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       (entries) => {
-        const e = entries[0];
-        if (e.isIntersecting) {
+        const entry = entries[0];
+
+        if (entry.isIntersecting) {
           setRevealed(true);
-          io.unobserve(el);
-          // active parallax seulement quand l'élément est dans le viewport
+          observer.unobserve(el);
           activeRef.current = !reduce;
         } else {
           activeRef.current = false;
         }
       },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.15 }
+      {
+        rootMargin: "0px 0px -10% 0px",
+        threshold: 0.15,
+      }
     );
-    io.observe(el);
 
-    // ---- Parallax léger (raf throttle)
+    observer.observe(el);
+
     const onFrame = () => {
       if (!activeRef.current) return;
+
       const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight || 1;
-      // position du centre de la carte vs centre viewport -> [-1..1]
-      const delta = (rect.top + rect.height / 2 - vh / 2) / (vh / 2);
-      const move = Math.max(-1, Math.min(1, -delta)) * 16; // px, léger
+      const viewportHeight = window.innerHeight || 1;
+
+      const delta =
+        (rect.top + rect.height / 2 - viewportHeight / 2) /
+        (viewportHeight / 2);
+
+      const move = Math.max(-1, Math.min(1, -delta)) * 16;
+
       media.style.transform = `translateY(${move.toFixed(1)}px)`;
       rafRef.current = requestAnimationFrame(onFrame);
     };
 
     const onScroll = () => {
       if (!activeRef.current) return;
+
       cancelAnimationFrame(rafRef.current);
       rafRef.current = requestAnimationFrame(onFrame);
     };
 
     if (!reduce) {
       rafRef.current = requestAnimationFrame(onFrame);
-      window.addEventListener("scroll", onScroll, { passive: true });
+
+      window.addEventListener("scroll", onScroll, {
+        passive: true,
+      });
+
       window.addEventListener("resize", onScroll);
     }
 
     return () => {
-      io.disconnect();
+      observer.disconnect();
       cancelAnimationFrame(rafRef.current);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
@@ -110,37 +124,38 @@ export default function ProjectCard({
       ].join(" ")}
       aria-labelledby={`proj-${slugify(title)}`}
     >
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 items-center">
-        {/* Media (parallax léger) */}
+      <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-12 md:gap-10">
+        {/* Image */}
         <div className={`${mediaOrder} md:col-span-6`}>
           <div
             ref={mediaRef}
-            className="relative rounded-2xl overflow-hidden border border-white/10 bg-[#6A00FF]/10 w-full will-change-transform"
+            className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-[#6A00FF]/10 will-change-transform"
             style={{ aspectRatio: "16/10" }}
           >
             <Image
               src={image}
               alt={`${title} – aperçu`}
               fill
-              sizes="(max-width:768px) 100vw, 50vw"
+              sizes="(max-width: 768px) 100vw, 50vw"
               placeholder="blur"
-              loading="lazy"
               priority={priority}
+              {...(!priority && { loading: "lazy" })}
               className={`${fitClass} transition-transform duration-500 group-hover:scale-[1.02]`}
             />
-            <div className="pointer-events-none absolute inset-0 opacity-30 bg-[radial-gradient(60%_60%_at_60%_50%,#8A2EFF22,transparent_60%)]" />
+
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_60%_at_60%_50%,#8A2EFF22,transparent_60%)] opacity-30" />
           </div>
         </div>
 
-        {/* Texte (stagger interne) */}
+        {/* Texte */}
         <div className={`${textOrder} md:col-span-6`}>
           <p
             className={[
-              "text-[#EADCFD]/80 text-sm mb-2 tracking-[-0.02em]",
+              "mb-2 text-sm tracking-[-0.02em] text-[#EADCFD]/80",
               "transition-all duration-600 ease-[cubic-bezier(0.22,1,0.36,1)]",
               revealed
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-2",
+                ? "translate-y-0 opacity-100"
+                : "translate-y-2 opacity-0",
             ].join(" ")}
             style={{ transitionDelay: "0ms" }}
           >
@@ -150,18 +165,20 @@ export default function ProjectCard({
           <h4
             id={`proj-${slugify(title)}`}
             className={[
-              "text-white text-3xl md:text-5xl font-semibold leading-tight tracking-[-0.04em]",
+              "text-3xl font-semibold leading-tight tracking-[-0.04em] text-white md:text-5xl",
               "transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
               revealed
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-3",
+                ? "translate-y-0 opacity-100"
+                : "translate-y-3 opacity-0",
             ].join(" ")}
             style={{ transitionDelay: "80ms" }}
           >
             {title}
+
             <br className="hidden md:block" />
+
             {subtitle ? (
-              <span className="opacity-70 text-2xl md:text-3xl">
+              <span className="text-2xl opacity-70 md:text-3xl">
                 {" "}
                 {subtitle}
               </span>
@@ -171,11 +188,11 @@ export default function ProjectCard({
           {description ? (
             <p
               className={[
-                "mt-5 text-[#EDE9F7]/80 leading-relaxed",
+                "mt-5 leading-relaxed text-[#EDE9F7]/80",
                 "transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
                 revealed
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-3",
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-3 opacity-0",
               ].join(" ")}
               style={{ transitionDelay: "160ms" }}
             >
@@ -192,16 +209,16 @@ export default function ProjectCard({
               ].join(" ")}
               style={{ transitionDelay: "220ms" }}
             >
-              {tags.map((t) => (
+              {tags.map((tag) => (
                 <span
-                  key={t}
+                  key={tag}
                   className={[
-                    "text-xs text-white/90 bg-white/10 border border-white/10 px-3 py-1 rounded-full",
+                    "rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs text-white/90",
                     "transition-transform duration-500",
                     revealed ? "translate-y-0" : "translate-y-2",
                   ].join(" ")}
                 >
-                  {t}
+                  {tag}
                 </span>
               ))}
             </div>
@@ -212,26 +229,27 @@ export default function ProjectCard({
               "mt-8",
               "transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
               revealed
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-3",
+                ? "translate-y-0 opacity-100"
+                : "translate-y-3 opacity-0",
             ].join(" ")}
             style={{ transitionDelay: "280ms" }}
           >
             {onOpenModal ? (
               <button
+                type="button"
                 onClick={onOpenModal}
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-3 text-sm font-medium text-white
-               bg-[linear-gradient(180deg,rgba(234,220,253,0.16),rgba(234,220,253,0))] hover:border-white/30 hover:bg-white/10 transition-colors"
+                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-[linear-gradient(180deg,rgba(234,220,253,0.16),rgba(234,220,253,0))] px-5 py-3 text-sm font-medium text-white transition-colors hover:border-white/30 hover:bg-white/10"
               >
-                Voir le projet <FiArrowUpRight />
+                Voir le projet
+                <FiArrowUpRight />
               </button>
             ) : (
               <a
                 href={href}
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-3 text-sm font-medium text-white
-               bg-[linear-gradient(180deg,rgba(234,220,253,0.16),rgba(234,220,253,0))] hover:border-white/30 hover:bg-white/10 transition-colors"
+                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-[linear-gradient(180deg,rgba(234,220,253,0.16),rgba(234,220,253,0))] px-5 py-3 text-sm font-medium text-white transition-colors hover:border-white/30 hover:bg-white/10"
               >
-                Voir le projet <FiArrowUpRight />
+                Voir le projet
+                <FiArrowUpRight />
               </a>
             )}
           </div>
@@ -243,8 +261,8 @@ export default function ProjectCard({
   );
 }
 
-function slugify(s) {
-  return s
+function slugify(value) {
+  return value
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
