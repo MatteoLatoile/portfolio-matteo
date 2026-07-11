@@ -379,9 +379,8 @@ export default function Home() {
                   </p>
 
                   <p className="code-indent">
-                    craft: <span className="code-orange">"premium"</span>,
-                  </p>
-
+  craft: <span className="code-orange">&quot;premium&quot;</span>,
+</p>
                   <p className="code-indent">
                     control: <span className="code-purple">true</span>,
                   </p>

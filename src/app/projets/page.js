@@ -395,7 +395,9 @@ export default function ProjetPage() {
                   </p>
 
                   <p className="code-indentation">
-                    design: <span className="syntax-orange">"premium"</span>,
+                    design: <span className="syntax-orange">
+  &quot;premium&quot;
+</span>,
                   </p>
 
                   <p className="code-indentation">
